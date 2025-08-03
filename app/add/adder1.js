@@ -78,8 +78,9 @@ const Adder = () => {
       redirect: "follow"
     };
 
-    let r = await fetch("Http://localhost:3000/api/add", requestOptions);
-    let result = await r.json();
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;  // https://blinkb-1.onrender.com
+let r = await fetch(`${baseUrl}/api/add`, requestOptions);
+let result = await r.json();
     if (result.success) {
       const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || window.location.origin;
 const blinkLink = `${baseUrl}/${handle}`;
