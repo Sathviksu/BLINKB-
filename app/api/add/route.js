@@ -1,15 +1,34 @@
 import clientPromise from "@/lib/mongodb";
 
 export async function POST(request) {
-    const client = await clientPromise;
-    const db = client.db("blink");
-    const collection = db.collection("links");
-    const body = await request.json();
-    const doc=await collection.findOne({handle:body.handle})
-    if(doc){
-        return Response.json({success: false,message: "Handle already exists"});
-    }
-    const result=await collection.insertOne(body);
-    return Response.json({success: true,message: "Link added successfully",data:result});
-    }
-    
+  const client = await clientPromise;
+  const db = client.db("blink");
+  const collection = db.collection("links");
+  const body = await request.json();
+
+  // Add CORS headers
+  const headers = {
+    "Access-Control-Allow-Origin": "https://blinkb-app.netlify.app",
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
+  };
+
+  // Handle preflight
+  if (request.method === "OPTIONS") {
+    return new Response(null, { status: 204, headers });
+  }
+
+  const existing = await collection.findOne({ handle: body.handle });
+  if (existing) {
+    return new Response(JSON.stringify({ success: false, message: "Handle already exists" }), {
+      headers,
+      status: 200,
+    });
+  }
+
+  const result = await collection.insertOne(body);
+  return new Response(JSON.stringify({ success: true, message: "Link added successfully", data: result }), {
+    headers,
+    status: 200,
+  });
+}

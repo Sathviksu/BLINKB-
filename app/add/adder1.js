@@ -33,6 +33,8 @@ const Adder = () => {
   };
 
   const submitlink = async () => {
+      console.log("Submit clicked");
+
     // Add space validation
     if (handle.includes(' ')) {
       toast.error('Handle cannot contain spaces', {
