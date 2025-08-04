@@ -91,7 +91,7 @@ const Adder = () => {
       <div className='bg-[url("/pagebg.jpg")] flex flex-col md:flex-row items-center justify-center min-h-screen bg-cover'>
         
         {/* LEFT: FORM SECTION */}
-        <div className='w-full md:w-[55%] px-6 md:px-0 flex flex-col gap-4 min-h-screen pt-24 md:pt-[140px] md:ml-[200px]'>
+        <div className='w-full md:w-[55%] px-6 md:px-0 flex flex-col gap-4 min-h-screen pt-32 md:pt-[140px] md:ml-[200px]'>
           <div className='text-2xl font-bold text-[#f6f684]'>Create your Blink</div>
           <h1 className='text-[#FFEB00]'>Step 1: Claim your handle</h1>
           <input
