@@ -36,7 +36,11 @@ const Adder = () => {
       toast.error('Handle cannot contain spaces');
       return;
     }
-    if (handle.length < 3 || picture.length < 5 || links.some(link => link.link.length < 5 || link.linktext.length < 3)) {
+    if (
+      handle.length < 3 ||
+      picture.length < 5 ||
+      links.some(link => link.link.length < 5 || link.linktext.length < 3)
+    ) {
       toast.error('Please ensure all fields meet the minimum length requirements.');
       return;
     }
@@ -48,23 +52,38 @@ const Adder = () => {
       body: raw
     });
     const result = await r.json();
+
     if (result.success) {
       const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || window.location.origin;
       const blinkLink = `${baseUrl}/${handle}`;
       toast.success(
-        <div className="min-w-[400px] w-full">
+        <div className="w-full">
           <div className="text-xl font-semibold mb-3">Link added successfully! 🎉</div>
-          <div className="mt-2 p-4 bg-gray-800 rounded-lg flex justify-between items-center gap-4">
+          <div className="mt-2 p-4 bg-gray-800 rounded-lg flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
             <span className="text-base text-gray-300 break-all">{blinkLink}</span>
-            <button onClick={() => copyToClipboard(blinkLink)} className="px-4 py-2 text-sm bg-blue-500 rounded-lg hover:bg-blue-600 whitespace-nowrap">Copy</button>
+            <button
+              onClick={() => copyToClipboard(blinkLink)}
+              className="self-end sm:self-auto px-4 py-2 text-sm bg-blue-500 rounded-lg hover:bg-blue-600 whitespace-nowrap"
+            >
+              Copy
+            </button>
           </div>
         </div>,
-        { position: "top-center", autoClose: 15000, theme: "dark", style: { maxWidth: "600px", width: "70vw" } }
+        {
+          position: "top-center",
+          autoClose: 15000,
+          theme: "dark",
+          style: { maxWidth: "600px", width: "90vw" }
+        }
       );
     } else {
       toast.error(result.message || 'Something went wrong!');
     }
-    sethandle(""); setpicture(""); setdesc(""); setlinks([{ link: "", linktext: "" }]);
+
+    sethandle("");
+    setpicture("");
+    setdesc("");
+    setlinks([{ link: "", linktext: "" }]);
   };
 
   return (
@@ -72,17 +91,17 @@ const Adder = () => {
       <div className='bg-[url("/pagebg.jpg")] flex flex-col md:flex-row items-center justify-center min-h-screen bg-cover'>
         
         {/* LEFT: FORM SECTION */}
-<div className='w-full md:w-[55%] px-6 md:px-0 flex flex-col gap-4 min-h-screen pt-34 md:pt-[140px] md:ml-[200px]'>
+        <div className='w-full md:w-[55%] px-6 md:px-0 flex flex-col gap-4 min-h-screen pt-24 md:pt-[140px] md:ml-[200px]'>
           <div className='text-2xl font-bold text-[#f6f684]'>Create your Blink</div>
           <h1 className='text-[#FFEB00]'>Step 1: Claim your handle</h1>
-          <input 
+          <input
             value={handle}
             onChange={handleHandleChange}
             type='text'
             placeholder='Choose a handle'
             className='bg-[#d9f1fa] w-full max-w-xs md:max-w-[250px] pl-4 h-[45px] rounded-2xl text-[#232323]'
           />
-          
+
           <h1 className='text-[#FFEB00]'>Step 2: Add your links</h1>
           {links.map((link, index) => (
             <div className='flex flex-col sm:flex-row gap-3' key={index}>
@@ -102,7 +121,7 @@ const Adder = () => {
               />
             </div>
           ))}
-          
+
           <button
             onClick={addNewLink}
             className='h-[45px] mt-2 bg-[#57ee75] text-[#16423C] text-[18px] font-semibold rounded-2xl w-full max-w-[200px] hover:bg-[#73EC8B]'
@@ -111,13 +130,26 @@ const Adder = () => {
           </button>
 
           <h1 className='text-[#FFEB00]'>Step 3: Add picture and Description</h1>
-          <input value={picture} onChange={(e) => setpicture(e.target.value)} type='text' placeholder='Enter link to your picture'
-            className='bg-[#d9f1fa] w-full max-w-md pl-4 h-[45px] rounded-2xl text-[#232323]' />
-          <input value={desc} onChange={(e) => setdesc(e.target.value)} type='text' placeholder='Enter your description'
-            className='bg-[#d9f1fa] w-full max-w-md pl-4 h-[45px] rounded-2xl text-[#232323]' />
+          <input
+            value={picture}
+            onChange={(e) => setpicture(e.target.value)}
+            type='text'
+            placeholder='Enter link to your picture'
+            className='bg-[#d9f1fa] w-full max-w-md pl-4 h-[45px] rounded-2xl text-[#232323]'
+          />
+          <input
+            value={desc}
+            onChange={(e) => setdesc(e.target.value)}
+            type='text'
+            placeholder='Enter your description'
+            className='bg-[#d9f1fa] w-full max-w-md pl-4 h-[45px] rounded-2xl text-[#232323]'
+          />
 
-          <button disabled={!handle || !picture} onClick={submitlink}
-            className='disabled:bg-[#436149] h-[50px] mt-3 bg-[#57ee75] text-[#16423C] text-[18px] font-semibold rounded-2xl w-full max-w-[300px] hover:bg-[#73EC8B] mb-7'>
+          <button
+            disabled={!handle || !picture}
+            onClick={submitlink}
+            className='disabled:bg-[#436149] h-[50px] mt-3 bg-[#57ee75] text-[#16423C] text-[18px] font-semibold rounded-2xl w-full max-w-[300px] hover:bg-[#73EC8B] mb-7'
+          >
             Create Blink
           </button>
         </div>
